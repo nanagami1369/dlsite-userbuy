@@ -1,27 +1,27 @@
-var dlurl =
+let dlurl =
   'https://www.dlsite.com/maniax/mypage/userbuy/=/type/all/start/all/sort/1/order/1/page/'
-var lastPage = 1
-var result = new Object()
+let lastPage = 1
+let result = new Object()
 result.count = 0
 result.totalPrice = 0
 result.works = new Array()
 result.genreCount = new Map()
-var detailMode = true
+let detailMode = true
 
-for (var i = 1; i <= lastPage; i++) {
-  var doc = new DOMParser().parseFromString(fetchUrl(dlurl + i), 'text/html')
+for (let i = 1; i <= lastPage; i++) {
+  let doc = new DOMParser().parseFromString(fetchUrl(dlurl + i), 'text/html')
   if (i == 1) {
     console.log(`取得中 ${i}ページ目`)
-    var lastPageElm = doc.querySelector('.page_no ul li:last-child a')
+    let lastPageElm = doc.querySelector('.page_no ul li:last-child a')
     if (lastPageElm) {
       lastPage = parseInt(lastPageElm.dataset.value)
     }
   } else {
     console.log(`取得中 ${i}/${lastPage}ページ目`)
   }
-  var trElms = doc.querySelectorAll('.work_list_main tr:not(.item_name)')
+  let trElms = doc.querySelectorAll('.work_list_main tr:not(.item_name)')
   trElms.forEach((elm) => {
-    var work = new Object()
+    let work = new Object()
 
     if (elm.querySelector('.work_name a') == null) {
       work.url = ''
@@ -40,13 +40,13 @@ for (var i = 1; i <= lastPage; i++) {
 
     if (detailMode && work.url != '') {
       console.log(`取得中 ${work.url}`)
-      var docWork = new DOMParser().parseFromString(
+      let docWork = new DOMParser().parseFromString(
         fetchUrl(work.url),
         'text/html'
       )
       work.mainGenre = new Array()
       docWork.querySelectorAll('.main_genre a').forEach((a) => {
-        var g = a.textContent
+        let g = a.textContent
         work.mainGenre.push(g)
         if (!result.genreCount.has(g)) {
           result.genreCount.set(g, 0)
@@ -65,7 +65,7 @@ result.genreCount = new Map(
   [...result.genreCount.entries()].sort(([, idA], [, idB]) => idB - idA)
 )
 
-var ranking = ''
+let ranking = ''
 result.genreCount.forEach((value, key) => {
   ranking += key + ':' + value + ' '
 })
@@ -75,7 +75,7 @@ console.log(`完了 作品数:${result.count} 合計金額:${result.totalPrice}`
 console.log('ジャンル 多かった順\n' + ranking)
 
 function fetchUrl(url) {
-  var request = new XMLHttpRequest()
+  let request = new XMLHttpRequest()
   request.open('GET', url, false)
   request.withCredentials = true
   request.send(null)

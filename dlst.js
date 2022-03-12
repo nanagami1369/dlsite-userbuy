@@ -23,35 +23,43 @@ for (let i = 1; i <= lastPage; i++) {
   }
   let trElement = doc.querySelectorAll('.work_list_main tr:not(.item_name)')
   trElement.forEach((elm) => {
-    let work = new Object()
-
-    if (elm.querySelector('.work_name a') == null) {
-      work.url = ''
+    let workUrl = ''
+    if (elm.querySelector('.work_name a') != null) {
+      workUrl = elm.querySelector('.work_name a').href
     } else {
-      work.url = elm.querySelector('.work_name a').href
     }
 
-    work.date = elm.querySelector('.buy_date').innerText
-    work.name = elm.querySelector('.work_name').innerText.trim()
-    work.genre = elm.querySelector('.work_genre span').textContent.trim()
-    work.price = parseInt(
+    const workDate = elm.querySelector('.buy_date').innerText
+    const workName = elm.querySelector('.work_name').innerText.trim()
+    const workGenre = elm.querySelector('.work_genre span').textContent.trim()
+    const workPrice = parseInt(
       elm.querySelector('.work_price').innerText.replace(/\D/g, '')
     )
 
-    work.makerName = elm.querySelector('.maker_name').innerText.trim()
+    const workMakerName = elm.querySelector('.maker_name').innerText.trim()
 
-    if (detailMode && work.url != '') {
-      console.log(`取得中 ${work.url}`)
-      let docWork = parser.parseFromString(fetchUrl(work.url), 'text/html')
-      work.mainGenre = new Array()
+    const workMainGenre = []
+    if (detailMode && workUrl != '') {
+      console.log(`取得中 ${workUrl}`)
+      let docWork = parser.parseFromString(fetchUrl(workUrl), 'text/html')
       docWork.querySelectorAll('.main_genre a').forEach((a) => {
         let g = a.textContent
-        work.mainGenre.push(g)
+        workMainGenre.push(g)
         if (!result.genreCount.has(g)) {
           result.genreCount.set(g, 0)
         }
         result.genreCount.set(g, result.genreCount.get(g) + 1)
       })
+    }
+
+    const work = {
+      url: workUrl,
+      date: workDate,
+      name: workName,
+      genre: workGenre,
+      price: workPrice,
+      makerName: workMakerName,
+      mainGenre: workMainGenre,
     }
 
     result.count++

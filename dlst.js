@@ -1,4 +1,4 @@
-let dlurl =
+let baseUrl =
   'https://www.dlsite.com/maniax/mypage/userbuy/=/type/all/start/all/sort/1/order/1/page/'
 let lastPage = 1
 let result = new Object()
@@ -9,7 +9,7 @@ result.genreCount = new Map()
 let detailMode = true
 
 for (let i = 1; i <= lastPage; i++) {
-  let doc = new DOMParser().parseFromString(fetchUrl(dlurl + i), 'text/html')
+  let doc = new DOMParser().parseFromString(fetchUrl(baseUrl + i), 'text/html')
   if (i == 1) {
     console.log(`取得中 ${i}ページ目`)
     let lastPageElm = doc.querySelector('.page_no ul li:last-child a')

@@ -14,15 +14,15 @@ for (let i = 1; i <= lastPage; i++) {
   let doc = parser.parseFromString(fetchUrl(baseUrl + i), 'text/html')
   if (i == 1) {
     console.log(`取得中 ${i}ページ目`)
-    let lastPageElm = doc.querySelector('.page_no ul li:last-child a')
-    if (lastPageElm) {
-      lastPage = parseInt(lastPageElm.dataset.value)
+    let lastPageElement = doc.querySelector('.page_no ul li:last-child a')
+    if (lastPageElement) {
+      lastPage = parseInt(lastPageElement.dataset.value)
     }
   } else {
     console.log(`取得中 ${i}/${lastPage}ページ目`)
   }
-  let trElms = doc.querySelectorAll('.work_list_main tr:not(.item_name)')
-  trElms.forEach((elm) => {
+  let trElement = doc.querySelectorAll('.work_list_main tr:not(.item_name)')
+  trElement.forEach((elm) => {
     let work = new Object()
 
     if (elm.querySelector('.work_name a') == null) {

@@ -8,8 +8,10 @@ result.works = new Array()
 result.genreCount = new Map()
 let detailMode = true
 
+const parser = new DOMParser()
+
 for (let i = 1; i <= lastPage; i++) {
-  let doc = new DOMParser().parseFromString(fetchUrl(baseUrl + i), 'text/html')
+  let doc = parser.parseFromString(fetchUrl(baseUrl + i), 'text/html')
   if (i == 1) {
     console.log(`取得中 ${i}ページ目`)
     let lastPageElm = doc.querySelector('.page_no ul li:last-child a')
@@ -40,10 +42,7 @@ for (let i = 1; i <= lastPage; i++) {
 
     if (detailMode && work.url != '') {
       console.log(`取得中 ${work.url}`)
-      let docWork = new DOMParser().parseFromString(
-        fetchUrl(work.url),
-        'text/html'
-      )
+      let docWork = parser.parseFromString(fetchUrl(work.url), 'text/html')
       work.mainGenre = new Array()
       docWork.querySelectorAll('.main_genre a').forEach((a) => {
         let g = a.textContent

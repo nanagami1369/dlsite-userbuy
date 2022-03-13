@@ -1,4 +1,4 @@
-let baseUrl =
+const baseUrl =
   'https://www.dlsite.com/maniax/mypage/userbuy/=/type/all/start/all/sort/1/order/1/page/'
 let lastPage = 1
 const result = {
@@ -12,17 +12,17 @@ let detailMode = true
 const parser = new DOMParser()
 
 for (let i = 1; i <= lastPage; i++) {
-  let doc = parser.parseFromString(fetchUrl(baseUrl + i), 'text/html')
+  const doc = parser.parseFromString(fetchUrl(baseUrl + i), 'text/html')
   if (i == 1) {
     console.log(`取得中 ${i}ページ目`)
-    let lastPageElement = doc.querySelector('.page_no ul li:last-child a')
+    const lastPageElement = doc.querySelector('.page_no ul li:last-child a')
     if (lastPageElement) {
       lastPage = parseInt(lastPageElement.dataset.value)
     }
   } else {
     console.log(`取得中 ${i}/${lastPage}ページ目`)
   }
-  let trElement = doc.querySelectorAll('.work_list_main tr:not(.item_name)')
+  const trElement = doc.querySelectorAll('.work_list_main tr:not(.item_name)')
   trElement.forEach((elm) => {
     let workUrl = ''
     if (elm.querySelector('.work_name a') != null) {
@@ -42,9 +42,9 @@ for (let i = 1; i <= lastPage; i++) {
     const workMainGenre = []
     if (detailMode && workUrl != '') {
       console.log(`取得中 ${workUrl}`)
-      let docWork = parser.parseFromString(fetchUrl(workUrl), 'text/html')
+      const docWork = parser.parseFromString(fetchUrl(workUrl), 'text/html')
       docWork.querySelectorAll('.main_genre a').forEach((a) => {
-        let g = a.textContent
+        const g = a.textContent
         workMainGenre.push(g)
         if (!result.genreCount.has(g)) {
           result.genreCount.set(g, 0)
@@ -83,7 +83,7 @@ console.log(`完了 作品数:${result.count} 合計金額:${result.totalPrice}`
 console.log('ジャンル 多かった順\n' + ranking)
 
 function fetchUrl(url) {
-  let request = new XMLHttpRequest()
+  const request = new XMLHttpRequest()
   request.open('GET', url, false)
   request.withCredentials = true
   request.send(null)

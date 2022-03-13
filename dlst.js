@@ -1,11 +1,12 @@
 let baseUrl =
   'https://www.dlsite.com/maniax/mypage/userbuy/=/type/all/start/all/sort/1/order/1/page/'
 let lastPage = 1
-let result = new Object()
-result.count = 0
-result.totalPrice = 0
-result.works = new Array()
-result.genreCount = new Map()
+const result = {
+  count: 0,
+  totalPrice: 0,
+  works: [],
+  genreCount: new Map(),
+}
 let detailMode = true
 
 const parser = new DOMParser()

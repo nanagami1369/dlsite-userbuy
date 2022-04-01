@@ -6,6 +6,7 @@ const result = {
   totalPrice: 0,
   works: [],
   genreCount: new Map(),
+  makerCount: new Map(),
 }
 let detailMode = true
 
@@ -63,6 +64,14 @@ for (let i = 1; i <= lastPage; i++) {
       mainGenre: workMainGenre,
     }
 
+    if (!result.makerCount.has(work.makerName)) {
+      result.makerCount.set(work.makerName, 0)
+    }
+    result.makerCount.set(
+      work.makerName,
+      result.makerCount.get(work.makerName) + 1
+    )
+
     result.count++
     result.totalPrice += work.price
     result.works.push(work)
@@ -73,14 +82,24 @@ result.genreCount = new Map(
   [...result.genreCount.entries()].sort(([, idA], [, idB]) => idB - idA)
 )
 
-let ranking = ''
+result.makerCount = new Map(
+  [...result.makerCount.entries()].sort(([, idA], [, idB]) => idB - idA)
+)
+
+let genreRanking = ''
 result.genreCount.forEach((value, key) => {
-  ranking += key + ':' + value + ' '
+  genreRanking += key + ':' + value + ' '
+})
+
+let makerRanking = ''
+result.makerCount.forEach((value, key) => {
+  makerRanking += key + ':' + value + ' '
 })
 
 console.log(JSON.stringify(result))
 console.log(`完了 作品数:${result.count} 合計金額:${result.totalPrice}`)
-console.log('ジャンル 多かった順\n' + ranking)
+console.log('ジャンル 多かった順\n' + genreRanking)
+console.log('サークル 多かった順\n' + makerRanking)
 
 function fetchUrl(url) {
   const request = new XMLHttpRequest()

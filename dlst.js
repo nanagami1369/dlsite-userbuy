@@ -13,6 +13,7 @@ let detailMode = true
 
 const parser = new DOMParser()
 
+// ページ走査
 for (let i = 1; i <= lastPage; i++) {
   const doc = parser.parseFromString(fetchUrl(baseUrl + i), 'text/html')
   if (i == 1) {
@@ -26,6 +27,7 @@ for (let i = 1; i <= lastPage; i++) {
   }
   const trElement = doc.querySelectorAll('.work_list_main tr:not(.item_name)')
   trElement.forEach((elm) => {
+    // 履歴の表の行走査
     let workUrl = ''
     if (elm.querySelector('.work_name a') != null) {
       workUrl = elm.querySelector('.work_name a').href

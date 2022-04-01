@@ -7,6 +7,7 @@ const result = {
   works: [],
   genreCount: new Map(),
   makerCount: new Map(),
+  eol: [],
 }
 let detailMode = true
 
@@ -75,6 +76,9 @@ for (let i = 1; i <= lastPage; i++) {
     result.count++
     result.totalPrice += work.price
     result.works.push(work)
+    if (work.url == '') {
+      result.eol.push(work)
+    }
   })
 }
 
@@ -100,6 +104,14 @@ console.log(JSON.stringify(result))
 console.log(`完了 作品数:${result.count} 合計金額:${result.totalPrice}`)
 console.log('ジャンル 多かった順\n' + genreRanking)
 console.log('サークル 多かった順\n' + makerRanking)
+
+if (result.eol.length > 0) {
+  var str = `販売終了作品数:${result.eol.length}\n`
+  result.eol.forEach((work) => {
+    str += `${work.date} ${work.makerName} - ${work.name}\n`
+  })
+  console.log(str)
+}
 
 function fetchUrl(url) {
   const request = new XMLHttpRequest()
